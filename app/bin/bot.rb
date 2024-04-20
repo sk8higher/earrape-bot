@@ -1,6 +1,6 @@
 require 'telegram/bot'
 require_relative 'audio_processor'
-
+require_relative '../jobs/sample_job'
 class Bot
   def initialize
     token = ENV['TELEGRAM_BOT_TOKEN']
