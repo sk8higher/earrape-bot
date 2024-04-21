@@ -1,4 +1,11 @@
-providers = ["ruby"]
+# Took from https://github.com/railwayapp/nixpacks/pull/817#issuecomment-1475032321
+
+[variables]
+RUBY_CONFIGURE_OPTS="--with-jemalloc --disable-install-rdoc"
 
 [phases.setup]
+aptPkgs = ["...", "libjemalloc-dev"]
 nixPkgs = ["...", "ffmpeg"]
+
+cmds = ["cp -r /cache/.rbenv /root", "curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash -s stable && printf '\\neval \"$(rbenv init -)\"' >> /root/.profile && . /root/.profile && rbenv install -s 3.2.2 && rbenv global 3.2.2 && gem install bundler:2.4.19 --no-document --conservative", "cp -r /root/.rbenv /cache"]
+cacheDirectories = ["/cache/.rbenv"]
