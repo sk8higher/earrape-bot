@@ -1,6 +1,8 @@
 # frozen_string_literal: true
+
 require_relative 'file_name_generator'
 
+# This class is used to process audio before sending it back to user.
 class AudioProcessor
   extend FileNameGenerator
   class << self
