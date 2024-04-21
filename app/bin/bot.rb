@@ -17,12 +17,14 @@ class Bot
             get_file_to_download = bot.api.getFile(file_id: message.audio.file_id)
 
             audio = Audio.new
-            AudioProcessor.download_audio(audio, get_file_to_download)
-            AudioProcessor.earrape(audio)
+            audio_file_id = audio.file_id
 
-            bot.api.send_audio(chat_id: message.chat.id, audio: Faraday::UploadIO.new(audio.output_file_name, 'audio/mp3'))
+            AudioProcessor.download_audio(audio_file_id, get_file_to_download)
+            AudioProcessor.earrape(audio_file_id)
 
-            AudioProcessor.delete_files(audio)
+            bot.api.send_audio(chat_id: message.chat.id, audio: Faraday::UploadIO.new(AudioProcessor.output_file_name(audio_file_id), 'audio/mp3'))
+
+            AudioProcessor.delete_files(AudioProcessor.input_file_name(audio_file_id), AudioProcessor.output_file_name(audio_file_id))
           end
         end
       end

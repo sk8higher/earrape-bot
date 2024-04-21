@@ -1,12 +1,11 @@
 require 'open-uri'
+require_relative 'file_name_generator'
 
 class Audio
-  attr_reader :file_id, :input_file_name, :output_file_name
+  attr_reader :file_id
 
   def initialize
     @file_id = generate_file_id
-    @input_file_name = "in-#{@file_id}.mp3"
-    @output_file_name = "out-#{@file_id}.mp3"
   end
 
   private
