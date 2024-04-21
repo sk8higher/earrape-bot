@@ -12,6 +12,6 @@ What I've used:
 - Sidekiq for handling audio processing tasks
 
 Plans:
-- [ ] Wrap bot in a Docker container
+- [x] Wrap bot in a Docker container
 - [x] Host bot
 - [ ] Write tests?
