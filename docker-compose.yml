@@ -1,0 +1,11 @@
+services:
+  bot:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env/bot
+    depends_on:
+      - redis
+  redis:
+    image: redis
