@@ -1,0 +1,4 @@
+providers = ["ruby"]
+
+[phases.setup]
+nixPkgs = ["...", "ffmpeg"]
