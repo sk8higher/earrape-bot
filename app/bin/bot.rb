@@ -14,12 +14,15 @@ class Bot
 
     Telegram::Bot::Client.run(token) do |bot|
       bot.listen do |message|
-        case message.text
+        case message
         when '/start'
-          bot.api.send_message(chat_id: message.chat.id,
-                               text: "Hello, #{message.from.first_name} welcome to Earrape Bot. Send audio to make it loud.")
-        else
-          if message.audio
+          begin
+            bot.api.send_message(chat_id: message.chat.id,
+                                 text: "Hello, #{message.from.first_name} welcome to Earrape Bot. Send audio to make it loud.")
+          rescue Telegram::Bot::Exceptions::ResponseError
+          end
+        when message.audio
+          begin
             bot.api.send_message(chat_id: message.chat.id, text: 'Processing audio, wait...')
 
             get_file_to_download = bot.api.getFile(file_id: message.audio.file_id)
@@ -36,6 +39,12 @@ class Bot
                                ))
 
             DeleteFilesJob.new.perform(audio_file_id)
+          rescue Telegram::Bot::Exceptions::ResponseError
+          end
+        else
+          begin
+            bot.api.send_message(chat_id: message.chat.id, text: 'Send me an audio file')
+          rescue Telegram::Bot::Exceptions::ResponseError
           end
         end
       end
