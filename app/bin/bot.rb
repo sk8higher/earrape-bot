@@ -1,4 +1,5 @@
 require 'telegram/bot'
+require_relative 'audio'
 require_relative 'audio_processor'
 class Bot
   def initialize
@@ -15,13 +16,13 @@ class Bot
 
             get_file_to_download = bot.api.getFile(file_id: message.audio.file_id)
 
-            audio_processor = AudioProcessor.new
-            audio_processor.download_audio(get_file_to_download)
-            audio_processor.earrape
+            audio = Audio.new
+            AudioProcessor.download_audio(audio, get_file_to_download)
+            AudioProcessor.earrape(audio)
 
-            bot.api.send_audio(chat_id: message.chat.id, audio: Faraday::UploadIO.new(audio_processor.output_file_name, 'audio/mp3'))
+            bot.api.send_audio(chat_id: message.chat.id, audio: Faraday::UploadIO.new(audio.output_file_name, 'audio/mp3'))
 
-            audio_processor.delete_files
+            AudioProcessor.delete_files(audio)
           end
         end
       end
