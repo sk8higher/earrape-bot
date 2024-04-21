@@ -2,6 +2,8 @@
 
 Telegram bot for making loud audios, written in Ruby.
 
+[Bot link (hosted on free Railway tier, may be unactive)](https://t.me/earrapemaker_bot)
+
 What I've used:
 
 - Ruby 3.2.2
@@ -11,4 +13,5 @@ What I've used:
 
 Plans:
 - [ ] Wrap bot in a Docker container
-- [ ] Host bot
+- [x] Host bot
+- [ ] Write tests?
