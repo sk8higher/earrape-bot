@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem 'telegram-bot-ruby'
 gem 'faraday'
+gem 'rubocop'
 gem 'sidekiq'
-gem 'rack'
-gem 'rackup'
-gem 'rack-session'
+gem 'telegram-bot-ruby'
