@@ -1,5 +1,9 @@
 require 'telegram/bot'
+require_relative 'audio'
 require_relative 'audio_processor'
+require_relative '../jobs/delete_files_job'
+require_relative '../jobs/download_audio_job'
+require_relative '../jobs/earrape_audio_job'
 
 class Bot
   def initialize
@@ -15,13 +19,16 @@ class Bot
             bot.api.send_message(chat_id: message.chat.id, text: 'Processing audio, wait...')
 
             get_file_to_download = bot.api.getFile(file_id: message.audio.file_id)
-            AudioProcessor.download_audio(get_file_to_download)
 
-            AudioProcessor.earrape('in.mp3')
+            audio = Audio.new
+            audio_file_id = audio.file_id
 
-            bot.api.send_audio(chat_id: message.chat.id, audio: Faraday::UploadIO.new('output.mp3', 'audio/mp3'))
+            DownloadAudioJob.new.perform(audio_file_id, get_file_to_download)
+            EarrapeAudioJob.new.perform(audio_file_id)
 
-            AudioProcessor.delete_files
+            bot.api.send_audio(chat_id: message.chat.id, audio: Faraday::UploadIO.new(AudioProcessor.output_file_name(audio_file_id), 'audio/mp3'))
+
+            DeleteFilesJob.new.perform(audio_file_id)
           end
         end
       end
